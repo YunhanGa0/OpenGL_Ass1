@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import GraphicsObjects.Point3f;
-import GraphicsObjects.Vector3f;
 
 public class ParametricTriangle {
 
 	Point3f A;
 	Point3f B;
 	Point3f C;
+	Color color;
 
 	public ParametricTriangle(Point3f a, Point3f b, Point3f c) {
 		A = a;
@@ -52,14 +52,10 @@ public class ParametricTriangle {
 	}
 
 	// 已实现的方法，用于适应Swing的坐标系统
-	public void setPixel(Graphics g, int x, int y, float R, float G, float B) {
- 
+	private void setPixel(Graphics g, int x, int y, float R, float G, float B) {
 		Color pixelColour = new Color(R, G, B);
 		g.setColor(pixelColour);
-		g.drawRect(x + 500, 500 - y, 1, 1); // + 500 offset is to make the
-											// centre 0,0 at centre of the
-											// screen
-
+		g.fillRect(x, y, 1, 1); // 直接使用x和y，不进行坐标转换
 	}
 
 }
