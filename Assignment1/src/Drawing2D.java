@@ -75,42 +75,61 @@ public class Drawing2D extends JPanel {
 
     // Draw the complete house scene
     private void drawHouse(Graphics g) {
+
         // Draw sky
         drawRectangleWithTriangles(g, 0, 0, 800, 400, new Color(135, 206, 235));
 
         // Draw grass
         drawRectangleWithTriangles(g, 0, 400, 800, 200, new Color(34, 139, 34));
 
-        // Draw house body
+        // Add some grass on the grass
+        drawGrass(g);
+
+        // Draw house body (now with two floors)
         drawRectangleWithTriangles(g, 200, 250, 400, 300, new Color(210, 180, 140));
+        
+        // Draw second floor
+        drawRectangleWithTriangles(g, 220, 200, 360, 100, new Color(200, 170, 130));
 
-        // Draw chimney
-        drawRectangleWithTriangles(g, 500, 150, 40, 100, Color.GRAY);
 
-        // Draw roof using parametric triangle
-        ParametricTriangle1 roof = new ParametricTriangle1(
-            new Point3f(200, 250, 0),
-            new Point3f(400, 100, 0),
-            new Point3f(600, 250, 0)
-        );
-        roof.drawTriangle(g);
 
         // Draw door
         drawRectangleWithTriangles(g, 370, 400, 60, 150, new Color(101, 67, 33));
+        drawRectangleWithTriangles(g, 410, 470, 10, 10, Color.YELLOW);  // Door knob
 
-        // Draw doorknob
-        drawRectangleWithTriangles(g, 410, 470, 10, 10, Color.YELLOW);
+        // Draw windows on the first floor
+        drawRectangleWithTriangles(g, 260, 350, 80, 80, Color.WHITE);
+        drawRectangleWithTriangles(g, 480, 350, 80, 80, Color.WHITE);
 
-        // Draw windows
-        drawRectangleWithTriangles(g, 260, 300, 80, 80, Color.WHITE);
-        drawRectangleWithTriangles(g, 480, 300, 80, 80, Color.WHITE);
+        // Draw windows on the second floor
+        drawRectangleWithTriangles(g, 260, 220, 60, 60, Color.WHITE);
+        drawRectangleWithTriangles(g, 500, 220, 60, 60, Color.WHITE);
+
+
+
+        // Draw balcony
+        drawRectangleWithTriangles(g, 340, 250, 140, 20, new Color(180, 150, 110));
+        
+        // Draw balcony railing
+        for (int i = 0; i < 7; i++) {
+            int x = 350 + i *20;
+            new ParametricLine(new Point3f(x, 250, 0), new Point3f(x, 230, 0)).drawLine(g);
+        }
+        new ParametricLine(new Point3f(340, 230, 0), new Point3f(480, 230, 0)).drawLine(g);
+
 
         // Draw window crosses
         g.setColor(Color.BLACK);
-        new ExplicitLine(new Point3f(260, 340, 0), new Point3f(340, 340, 0)).drawLine(g);
-        new ImplicitLine(new Point3f(300, 300, 0), new Point3f(300, 380, 0)).drawLine(g);
-        new ParametricLine(new Point3f(480, 340, 0), new Point3f(560, 340, 0)).drawLine(g);
-        new ExplicitLine(new Point3f(520, 300, 0), new Point3f(520, 380, 0)).drawLine(g);
+        // First floor windows
+        new ExplicitLine(new Point3f(260, 390, 0), new Point3f(340, 390, 0)).drawLine(g);
+        new ImplicitLine(new Point3f(300, 350, 0), new Point3f(300, 430, 0)).drawLine(g);
+        new ParametricLine(new Point3f(480, 390, 0), new Point3f(560, 390, 0)).drawLine(g);
+        new ExplicitLine(new Point3f(520, 350, 0), new Point3f(520, 430, 0)).drawLine(g);
+        // Second floor windows
+        new ExplicitLine(new Point3f(260, 250, 0), new Point3f(320, 250, 0)).drawLine(g);
+        new ImplicitLine(new Point3f(290, 220, 0), new Point3f(290, 280, 0)).drawLine(g);
+        new ParametricLine(new Point3f(500, 250, 0), new Point3f(560, 250, 0)).drawLine(g);
+        new ExplicitLine(new Point3f(530, 220, 0), new Point3f(530, 280, 0)).drawLine(g);
 
         // Draw sun
         drawSun(g, 700, 100, 80);
@@ -118,6 +137,19 @@ public class Drawing2D extends JPanel {
         // Draw trees
         drawTree(g, 100, 450);
         drawTree(g, 700, 430);
+
+        // Draw chimney
+        drawRectangleWithTriangles(g, 500, 90, 40, 100, Color.GRAY);
+
+        // Draw roof using parametric triangle
+        ParametricTriangle roof = new ParametricTriangle(
+                new Point3f(180, 200, 0),
+                new Point3f(400, 50, 0),
+                new Point3f(620, 200, 0),
+                Color.pink
+        );
+        roof.drawTriangle(g);
+
     }
 
     // Draw a tree at the specified position
@@ -154,7 +186,6 @@ public class Drawing2D extends JPanel {
         triangle1.drawTriangle(g);
         triangle2.drawTriangle(g);
     }
-
     // Draw the sun with rays
     private void drawSun(Graphics g, int centerX, int centerY, int size) {
         Color sunColor = Color.YELLOW;
@@ -183,6 +214,24 @@ public class Drawing2D extends JPanel {
             g.setColor(rayColor);
             ray.drawLine(g);
             g.setColor(originalColor);
+        }
+
+
+    }
+
+    // New method: Draw grass
+    private void drawGrass(Graphics g) {
+        Color darkGreen = new Color(0, 100, 0);
+        for (int i = 0; i < 50; i++) {
+            int x = (int) (Math.random() * 800);
+            int y = (int) (Math.random() * 150) + 450;
+            int height = (int) (Math.random() * 20) + 10;
+
+            ParametricLine grass1 = new ParametricLine(new Point3f(x, y, 0), new Point3f(x - 5, y - height, 0));
+            ParametricLine grass2 = new ParametricLine(new Point3f(x, y, 0), new Point3f(x + 5, y - height, 0));
+            grass1.drawLine(g);
+            grass2.drawLine(g);
+            g.setColor(darkGreen);
         }
     }
 
