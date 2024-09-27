@@ -16,17 +16,18 @@ public class ParametricLine {
 
 	}
 
-	// Implement in Parametric form , and comment what it does 
-	public void drawLine(Graphics g) {
-		Vector3f direction = End.MinusPoint(Start);
-		float length = direction.length();
-		Vector3f unitDirection = direction.Normal();
-		
-		for (float t = 0; t <= length; t += 0.5f) {
-			Point3f CurrentPoint = Start.PlusVector(unitDirection.byScalar(t));
-			setPixel(g, Math.round(CurrentPoint.x), Math.round(CurrentPoint.y));
-		}
-	}
+    // Draw the line using the parametric form of the line equation
+    public void drawLine(Graphics g) {
+        Vector3f direction = End.MinusPoint(Start);
+        float length = direction.length();
+        Vector3f unitDirection = direction.Normal();
+        
+        // Iterate along the line using the parameter t
+        for (float t = 0; t <= length; t += 0.5f) {
+            Point3f CurrentPoint = Start.PlusVector(unitDirection.byScalar(t));
+            setPixel(g, Math.round(CurrentPoint.x), Math.round(CurrentPoint.y));
+        }
+    }
 
 	// I have implemented this method to adapt Swings coordinate system
 	public void setPixel(Graphics g, int x, int y) {

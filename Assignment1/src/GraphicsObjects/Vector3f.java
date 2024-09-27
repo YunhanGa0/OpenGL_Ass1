@@ -4,39 +4,36 @@ package GraphicsObjects;
 
 public class Vector3f {
 
-	public float x=0;
-	public float y=0;
-	public float z=0;
+	public float x = 0;
+	public float y = 0;
+	public float z = 0;
 	
-	public Vector3f() 
-	{  
+	// Default constructor
+	public Vector3f() {  
 		x = 0.0f;
 		y = 0.0f;
 		z = 0.0f;
 	}
 	 
-	public Vector3f(float x, float y, float z) 
-	{ 
+	// Initializing constructor
+	public Vector3f(float x, float y, float z) { 
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
 	 //implement Vector plus a Vector  and comment what the method does  
-	public Vector3f PlusVector(Vector3f Additional) 
-	{ 
+	public Vector3f PlusVector(Vector3f Additional) { 
 		return new Vector3f(this.x + Additional.x, this.y + Additional.y, this.z + Additional.z);
 	} 
 	
 	 //implement Vector minus a Vector  and comment what the method does  
-	public Vector3f MinusVector(Vector3f Minus) 
-	{ 
+	public Vector3f MinusVector(Vector3f Minus) { 
 		return new Vector3f(this.x - Minus.x, this.y - Minus.y, this.z - Minus.z);
 	}
 	
 	//implement Vector plus a Point and comment what the method does  
-	public Point3f PlusPoint(Point3f Additional) 
-	{ 
+	public Point3f PlusPoint(Point3f Additional) { 
 		return new Point3f(this.x + Additional.x, this.y + Additional.y, this.z + Additional.z);
 	} 
 	//Do not implement Vector minus a Point as it is undefined 

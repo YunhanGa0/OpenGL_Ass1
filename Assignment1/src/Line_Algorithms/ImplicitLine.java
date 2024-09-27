@@ -17,49 +17,48 @@ public class ImplicitLine {
 
 	}
 
-	// Implement in Explict form , Extra marks for reducing the search space
-	// before you draw the line , and comment what the method does 
-	public void drawLine(Graphics g) {
-		int x1 = Math.round(Start.x);
-		int y1 = Math.round(Start.y);
-		int x2 = Math.round(End.x);
-		int y2 = Math.round(End.y);
-		
-		int dx = Math.abs(x2 - x1);
-		int dy = Math.abs(y2 - y1);
-		
-		int minX = Math.min(x1, x2);
-		int maxX = Math.max(x1, x2);
-		int minY = Math.min(y1, y2);
-		int maxY = Math.max(y1, y2);
-		
-		if (dx > dy) {
-			for (int x = minX; x <= maxX; x++) {
-				for (int y = minY; y <= maxY; y++) {
-					if (Math.abs(Distance(new Point3f(x, y, 0), Start, End)) < 0.5f) {
-						setPixel(g, x, y);
-					}
-				}
-			}
-		} else {
-			for (int y = minY; y <= maxY; y++) {
-				for (int x = minX; x <= maxX; x++) {
-					if (Math.abs(Distance(new Point3f(x, y, 0), Start, End)) < 0.5f) {
-						setPixel(g, x, y);
-					}
-				}
-			}
-		}
-	}
+    // Draw the line using the implicit form of the line equation
+    public void drawLine(Graphics g) {
+        int x1 = Math.round(Start.x);
+        int y1 = Math.round(Start.y);
+        int x2 = Math.round(End.x);
+        int y2 = Math.round(End.y);
+        
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        
+        int minX = Math.min(x1, x2);
+        int maxX = Math.max(x1, x2);
+        int minY = Math.min(y1, y2);
+        int maxY = Math.max(y1, y2);
+        
+        // Choose the driving axis based on the line's slope
+        if (dx > dy) {
+            for (int x = minX; x <= maxX; x++) {
+                for (int y = minY; y <= maxY; y++) {
+                    if (Math.abs(Distance(new Point3f(x, y, 0), Start, End)) < 0.5f) {
+                        setPixel(g, x, y);
+                    }
+                }
+            }
+        } else {
+            for (int y = minY; y <= maxY; y++) {
+                for (int x = minX; x <= maxX; x++) {
+                    if (Math.abs(Distance(new Point3f(x, y, 0), Start, End)) < 0.5f) {
+                        setPixel(g, x, y);
+                    }
+                }
+            }
+        }
+    }
 
-	 
-	//implement Distance formulas using your notes , and comment what the method does
-	public float Distance(Point3f Check, Point3f Beginning, Point3f End) {
-		Vector3f line = End.MinusPoint(Beginning);
-		Vector3f point = Check.MinusPoint(Beginning);
-		Vector3f cross = line.cross(point);
-		return cross.length() / line.length();
-	}
+    // Calculate the distance from a point to the line
+    public float Distance(Point3f Check, Point3f Beginning, Point3f End) {
+        Vector3f line = End.MinusPoint(Beginning);
+        Vector3f point = Check.MinusPoint(Beginning);
+        Vector3f cross = line.cross(point);
+        return cross.length() / line.length();
+    }
 
 	// I have implemented this method to adapt Swings coordinate system
 	public void setPixel(Graphics g, int x, int y) {
