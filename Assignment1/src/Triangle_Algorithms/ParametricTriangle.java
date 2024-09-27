@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import GraphicsObjects.Point3f;
+import GraphicsObjects.Vector3f;
 
 public class ParametricTriangle {
 
@@ -12,10 +13,12 @@ public class ParametricTriangle {
 	Point3f C;
 	Color color;
 
-	public ParametricTriangle(Point3f a, Point3f b, Point3f c) {
+	// 修改构造函数，添加颜色参数
+	public ParametricTriangle(Point3f a, Point3f b, Point3f c, Color color) {
 		A = a;
 		B = b;
 		C = c;
+		this.color = color;
 	}
 	 
 
@@ -40,12 +43,8 @@ public class ParametricTriangle {
 
 				// 如果点在三角形内部
 				if (alpha >= 0 && beta >= 0 && gamma >= 0) {
-					// 使用重心坐标插值颜色
-					float R = alpha;
-					float G = beta;
-					float B = gamma;
-
-					setPixel(g, x, y, R, G, B);
+					// 使用指定的颜色，而不是基于重心坐标的颜色
+					setPixel(g, x, y, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 				}
 			}
 		}
@@ -55,7 +54,17 @@ public class ParametricTriangle {
 	private void setPixel(Graphics g, int x, int y, float R, float G, float B) {
 		Color pixelColour = new Color(R, G, B);
 		g.setColor(pixelColour);
-		g.fillRect(x, y, 1, 1); // 直接使用x和y，不进行坐标转换
+		g.drawRect(x + 500, 500 + y, 1, 1); // + 500 offset is to make the
+		// centre 0,0 at centre of the
+		// screen
+	}
+
+	//implement Distance formulas using your notes , and comment what the method does
+	public float Distance(Point3f Check, Point3f Beginning, Point3f End) {
+		Vector3f line = End.MinusPoint(Beginning);
+		Vector3f point = Check.MinusPoint(Beginning);
+		Vector3f cross = line.cross(point);
+		return cross.length() / line.length();
 	}
 
 }

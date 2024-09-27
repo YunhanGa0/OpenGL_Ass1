@@ -9,6 +9,7 @@ import Line_Algorithms.ExplicitLine;
 import Line_Algorithms.ImplicitLine;
 import Line_Algorithms.ParametricLine;
 import Triangle_Algorithms.ParametricTriangle;
+import Triangle_Algorithms.ParametricTriangle1;
 
 /*
  * 
@@ -105,94 +106,102 @@ public class Drawing2D extends JPanel {
 		//insert your house drawings  here 
 
 		drawHouse(g);
-		drawCoordinateSystem(g);
+		//drawCoordinateSystem(g);
 	}
 	private void drawCoordinateSystem(Graphics g) {
-    g.setColor(Color.LIGHT_GRAY);
-    
-    // 绘制垂直线
-    for (int x = 0; x <= 800; x += 100) {
-        g.drawLine(x, 0, x, 600);
-    }
-    
-    // 绘制水平线
-    for (int y = 0; y <= 600; y += 100) {
-        g.drawLine(0, y, 800, y);
-    }
-    
-    // 绘制坐标轴
-    g.setColor(Color.BLACK);
-    g.drawLine(0, 0, 800, 0);  // X轴
-    g.drawLine(0, 0, 0, 600);  // Y轴
-    
-    // 添加刻度标记
-    for (int i = 100; i <= 800; i += 100) {
-        g.drawString(Integer.toString(i), i, 15);  // X轴刻度
-        if (i <= 600) {
-            g.drawString(Integer.toString(i), 5, i);  // Y轴刻度
-        }
-    }
-}
+		int centerX = 1300; // 假设屏幕宽度为800
+		int centerY = 700; // 假设屏幕高度为600
+
+		g.setColor(Color.LIGHT_GRAY);
+
+		// 绘制垂直线
+		for (int x = -1300; x <= 1300; x += 100) {
+			g.drawLine(centerX + x, 0, centerX + x, 1400);
+		}
+
+		// 绘制水平线
+		for (int y = -700; y <= 700; y += 100) {
+			g.drawLine(0, centerY - y, 2600, centerY - y);
+		}
+
+		// 绘制坐标轴
+		g.setColor(Color.BLACK);
+		g.drawLine(0, centerY, 2600, centerY);  // X轴
+		g.drawLine(centerX, 0, centerX, 1400);  // Y轴
+
+		// 添加刻度标记
+		g.setColor(Color.BLACK);
+		for (int i = -1300; i <= 1300; i += 100) {
+			if (i != 0) {
+				g.drawString(Integer.toString(i), centerX + i, centerY );  // X轴刻度
+			}
+		}
+		for (int i = -700; i <= 700; i += 100) {
+			if (i != 0) {
+				g.drawString(Integer.toString(i), centerX , centerY - i);  // Y轴刻度
+			}
+		}
+
+		// 标记原点
+		g.drawString("O", centerX , centerY );
+	}
 
 
 	private void drawHouse(Graphics g) {
 		// 绘制天空
-		fillRectangle(g, 0, 0, 800, 400, new Color(135, 206, 235));
+		drawRectangleWithTriangles(g, 0, 0, 800, 400, new Color(135, 206, 235));
 
 		// 绘制草地
-		fillRectangle(g, 0, 400, 800, 200, new Color(34, 139, 34));
+		drawRectangleWithTriangles(g, 0, 400, 800, 200, new Color(34, 139, 34));
 
 		// 绘制房子主体
-		fillRectangle(g, 200, 250, 400, 300, new Color(210, 180, 140));
+		drawRectangleWithTriangles(g, 200, 250, 400, 300, new Color(210, 180, 140));
 
 		// 绘制烟囱
-		fillRectangle(g, 500, 150, 40, 100, Color.GRAY);
+		drawRectangleWithTriangles(g, 500, 150, 40, 100, Color.GRAY);
 
 		// 绘制屋顶（使用参数化三角形）
-		ParametricTriangle roof = new ParametricTriangle(
-				new Point3f(200, 250, 0),
-				new Point3f(400, 100, 0),
-				new Point3f(600, 250, 0)
+		ParametricTriangle1 roof = new ParametricTriangle1(
+			new Point3f(200, 250, 0),
+			new Point3f(400, 100, 0),
+			new Point3f(600, 250, 0)
 		);
 		roof.drawTriangle(g);
 
 		// 绘制门
-		fillRectangle(g, 370, 400, 60, 150, new Color(101, 67, 33));
-		// 绘制门把手（正方形）
-		fillRectangle(g, 410, 470, 10, 10, Color.YELLOW);
+		drawRectangleWithTriangles(g, 370, 400, 60, 150, new Color(101, 67, 33));
 
+		// 绘制门把手（正方形）
+		drawRectangleWithTriangles(g, 410, 470, 10, 10, Color.YELLOW);
 
 		// 绘制窗户
-		g.setColor(Color.WHITE);
 		// 左窗户
-		g.fillRect(260, 300, 80, 80);
+		drawRectangleWithTriangles(g, 260, 300, 80, 80, Color.WHITE);
 		// 右窗户
-		g.fillRect(480, 300, 80, 80);
+		drawRectangleWithTriangles(g, 480, 300, 80, 80, Color.WHITE);
 
 		// 绘制窗户上的十字
 		g.setColor(Color.BLACK);
 		// 左窗户
-		g.drawLine(260, 340, 340, 340);
-		g.drawLine(300, 300, 300, 380);
+		new ExplicitLine(new Point3f(260, 340, 0), new Point3f(340, 340, 0)).drawLine(g);
+		new ImplicitLine(new Point3f(300, 300, 0), new Point3f(300, 380, 0)).drawLine(g);
 		// 右窗户
-		g.drawLine(480, 340, 560, 340);
-		g.drawLine(520, 300, 520, 380);
-
+		new ParametricLine(new Point3f(480, 340, 0), new Point3f(560, 340, 0)).drawLine(g);
+		new ExplicitLine(new Point3f(520, 300, 0), new Point3f(520, 380, 0)).drawLine(g);
 
 		// 绘制太阳
-        drawSun(g, 700, 100, 50);
+		drawSun(g, 700, 100, 80);
 
 		// 绘制树
 		drawTree(g, 100, 450);
-		drawTree(g, 670, 430);
+		drawTree(g, 700, 430);
 	}
 
 
 	private void drawTree(Graphics g, int x, int y) {
-		fillRectangle(g, x - 10, y, 20, 80, new Color(101, 67, 33));
-		Color leafColor = new Color(34, 139, 34);
+		drawRectangleWithTriangles(g, x - 10, y, 20, 80, new Color(101, 67, 33));
 		for (int i = 0; i < 3; i++) {
-			ParametricTriangle leaf = new ParametricTriangle(
+			ParametricTriangle1 leaf = new ParametricTriangle1(
 					new Point3f(x - 50, y - i * 30, 0),
 					new Point3f(x, y - 60 - i * 30, 0),
 					new Point3f(x + 50, y - i * 30, 0)
@@ -201,40 +210,53 @@ public class Drawing2D extends JPanel {
 		}
 	}
 
-	private void fillRectangle(Graphics g, int x, int y, int width, int height, Color color) {
-		g.setColor(color);
-		g.fillRect(x, y, width, height);
-	}
+	private void drawRectangleWithTriangles(Graphics g, int x, int y, int width, int height, Color color) {
+		ParametricTriangle triangle1 = new ParametricTriangle(
+			new Point3f(x, y, 0),
+			new Point3f(x + width, y, 0),
+			new Point3f(x, y + height, 0),
+				color
+		);
+		ParametricTriangle triangle2 = new ParametricTriangle(
+			new Point3f(x + width, y, 0),
+			new Point3f(x + width, y + height, 0),
+			new Point3f(x, y + height, 0),
+				color
+		);
 
-	private void fillCircle(Graphics g, int x, int y, int radius, Color color) {
-		g.setColor(color);
-		g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
-	}
-
-	private void drawSun(Graphics g, int centerX, int centerY, int radius) {
-        g.setColor(Color.YELLOW);
-        
-        // 绘制12边形作为太阳的主体
-        int[] xPoints = new int[12];
-        int[] yPoints = new int[12];
-        for (int i = 0; i < 12; i++) {
-            double angle = Math.PI * 2 * i / 12;
-            xPoints[i] = (int) (centerX + radius * Math.cos(angle));
-            yPoints[i] = (int) (centerY + radius * Math.sin(angle));
-        }
-        g.fillPolygon(xPoints, yPoints, 12);
-        
-        // 添加光芒
-        g.setColor(new Color(255, 255, 0, 150)); // 半透明的黄色
-        for (int i = 0; i < 12; i++) {
-            double angle = Math.PI * 2 * i / 12;
-            int x1 = (int) (centerX + radius * Math.cos(angle));
-            int y1 = (int) (centerY + radius * Math.sin(angle));
-            int x2 = (int) (centerX + radius * 1.5 * Math.cos(angle));
-            int y2 = (int) (centerY + radius * 1.5 * Math.sin(angle));
-            g.drawLine(x1, y1, x2, y2);
-        }
+		triangle1.drawTriangle(g);
+		triangle2.drawTriangle(g);
     }
+
+	private void drawSun(Graphics g, int centerX, int centerY, int size) {
+		Color sunColor = Color.YELLOW;
+		Color rayColor = new Color(255, 255, 0, 150); // 半透明的黄色
+		
+		// 绘制太阳的主体（正方形）
+		int halfSize = size / 2;
+		drawRectangleWithTriangles(g, centerX - halfSize, centerY - halfSize, size, size, sunColor);
+		
+		// 添加光芒（使用ParametricLine）
+		int rayLength = size / 2;
+		for (int i = 0; i < 8; i++) {
+			double angle = Math.PI * i / 4;
+			int x1 = (int) (centerX + halfSize * Math.cos(angle));
+			int y1 = (int) (centerY + halfSize * Math.sin(angle));
+			int x2 = (int) (centerX + (halfSize + rayLength) * Math.cos(angle));
+			int y2 = (int) (centerY + (halfSize + rayLength) * Math.sin(angle));
+			
+			ParametricLine ray = new ParametricLine(
+				new Point3f(x1, y1, 0),
+				new Point3f(x2, y2, 0)
+			);
+			
+			// 临时更改Graphics对象的颜色来绘制光芒
+			Color originalColor = g.getColor();
+			g.setColor(rayColor);
+			ray.drawLine(g);
+			g.setColor(originalColor);
+		}
+	}
 
 
 	public static void main(String[] args) {
