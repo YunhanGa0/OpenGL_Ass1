@@ -8,8 +8,8 @@ import GraphicsObjects.Point3f;
 import Line_Algorithms.ExplicitLine;
 import Line_Algorithms.ImplicitLine;
 import Line_Algorithms.ParametricLine;
+import Triangle_Algorithms.ParametricTriangle_color;
 import Triangle_Algorithms.ParametricTriangle;
-import Triangle_Algorithms.ParametricTriangle1;
 
 /*
  * 
@@ -142,7 +142,7 @@ public class Drawing2D extends JPanel {
         drawRectangleWithTriangles(g, 500, 90, 40, 100, Color.GRAY);
 
         // Draw roof using parametric triangle
-        ParametricTriangle roof = new ParametricTriangle(
+        ParametricTriangle_color roof = new ParametricTriangle_color(
                 new Point3f(180, 200, 0),
                 new Point3f(400, 50, 0),
                 new Point3f(620, 200, 0),
@@ -159,7 +159,7 @@ public class Drawing2D extends JPanel {
         
         // Draw tree leaves (three triangles)
         for (int i = 0; i < 3; i++) {
-            ParametricTriangle1 leaf = new ParametricTriangle1(
+            ParametricTriangle leaf = new ParametricTriangle(
                 new Point3f(x - 50, y - i * 30, 0),
                 new Point3f(x, y - 60 - i * 30, 0),
                 new Point3f(x + 50, y - i * 30, 0)
@@ -170,13 +170,13 @@ public class Drawing2D extends JPanel {
 
     // Draw a rectangle using two triangles
     private void drawRectangleWithTriangles(Graphics g, int x, int y, int width, int height, Color color) {
-        ParametricTriangle triangle1 = new ParametricTriangle(
+        ParametricTriangle_color triangle1 = new ParametricTriangle_color(
             new Point3f(x, y, 0),
             new Point3f(x + width, y, 0),
             new Point3f(x, y + height, 0),
             color
         );
-        ParametricTriangle triangle2 = new ParametricTriangle(
+        ParametricTriangle_color triangle2 = new ParametricTriangle_color(
             new Point3f(x + width, y, 0),
             new Point3f(x + width, y + height, 0),
             new Point3f(x, y + height, 0),

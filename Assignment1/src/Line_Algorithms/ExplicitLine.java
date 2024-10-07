@@ -35,13 +35,13 @@ public class ExplicitLine {
 		int y2 = Math.round(End.y);
 		
 		if (Math.abs(slope) <= 1) {
-			// 以x为主导轴
+			// With X as the dominant axis
 			for (int x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) {
 				int y = Math.round(slope * (x - x1) + y1);
 				setPixel(g, x, y);
 			}
 		} else {
-			// 以y为主导轴
+			// Take Y as the dominant axis
 			for (int y = Math.min(y1, y2); y <= Math.max(y1, y2); y++) {
 				int x = Math.round((y - y1) / slope + x1);
 				setPixel(g, x, y);
